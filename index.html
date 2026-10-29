@@ -42,7 +42,10 @@ button{font:inherit;color:inherit}
 .por,.th,.img{border:3px solid var(--ink);display:grid;place-items:center;color:#0008;font-family:Caveat,cursive;font-size:calc(var(--u)*2.4*var(--k));text-align:center}
 .por{width:70%;aspect-ratio:3/4;background:#e9dcb8;border-style:dashed;transform:rotate(-2deg);margin-top:6%}
 .th,.img{background:repeating-linear-gradient(45deg,hsl(var(--h) 60% 62%) 0 9px,hsl(var(--h) 60% 72%) 9px 18px)}
-.th{width:calc(var(--u)*9);aspect-ratio:1;flex:none}.img{aspect-ratio:4/3;margin:0 0 4%;box-shadow:4px 5px 0 #0003}
+.th{width:calc(var(--u)*9);aspect-ratio:1;flex:none;overflow:hidden;background:#e9dcb8}
+.th img{display:block;width:100%;height:100%;object-fit:cover}
+.img{aspect-ratio:4/3;margin:0 0 4%;box-shadow:4px 5px 0 #0003;overflow:hidden;background:#e9dcb8}
+.img img{display:block;width:100%;height:100%;object-fit:contain;background:#f4ead2}
 .it{display:flex;gap:4%;width:100%;text-align:left;background:none;border:0;border-bottom:2px dashed #b7a57a;padding:3% 0;cursor:pointer;align-items:center}
 .it:hover b{text-decoration:underline wavy #e8523a}.it b{font-family:Fraunces,serif;font-size:calc(var(--u)*2.6*var(--kt))}.it small{display:block;color:#7a6a4a}
 .bk{background:var(--ink);color:#f4ead2;border:0;border-radius:99px;padding:.5em 1.1em;cursor:pointer;margin:4% 3% 0 0}.bk:hover{background:#9a3b24}
@@ -90,7 +93,13 @@ button{font:inherit;color:inherit}
 const D={
  about:{lead:'Placeholder introduction — replace with Dhwani’s own words.',bio:['Placeholder biography paragraph. Add who Dhwani is and what she makes once her details are confirmed.','A second short paragraph for background, education or approach.'],int:['Interest one','Interest two','Interest three']},
  contact:{intro:'Placeholder: a warm sentence inviting people to get in touch.',email:'email-address@placeholder (add real email)',social:['Instagram — add link','LinkedIn — add link']},
- works:[['Project One','2025','Illustration',10],['Project Two','2025','Design',200],['Project Three','2024','Photography',280],['Project Four','2024','Writing',45],['Project Five','2023','Experiment',150]].map(a=>({t:a[0],y:a[1],c:a[2],h:a[3],d:'Placeholder one-line description of this project.',body:'Placeholder project story. Describe the idea, the process and the outcome here. Replace with approved content and images.'}))
+ works:[
+  {t:'Jugaad',y:'2025',c:'Publication design',h:10,d:'A publication exploring jugaad — an experience, a practice, a solution.',body:'A publication design project built around the idea of jugaad, with a bold red cover and a visual language inspired by everyday tools and resourcefulness.',image:'images/Jugaad%2001.png',gallery:['images/Jugaad%2002.png','images/Jugaad%2003.png']},
+  {t:'Golden Legacy',y:'2025',c:'Brand identity',h:200,d:'A visual identity exploration with a rich, dark palette and gold accents.',body:'Brand identity exploration, from the theme board and visual direction to form sketches and design development.',image:'images/Project%200201.png',gallery:['images/Project%200202.png']},
+  {t:'Project 03',y:'2025',c:'Identity & packaging',h:280,d:'A study of visual language, identity variations and product presentation.',body:'A visual identity and product presentation study, showing variations of the language system and product renders.',image:'images/Project%200301.png',gallery:['images/Project%200302.png']},
+  {t:'Cheap Dopamine and Its Effects',y:'2024',c:'Research & visual communication',h:45,d:'A visual research project about cheap dopamine and its effects.',body:'A visual communication project exploring cheap dopamine and its effects through research, typography and imagery.',image:'images/Project%200401.png',gallery:[]},
+  {t:'The Den Resort & Spa',y:'2024',c:'Branding & identity',h:150,d:'A nature-led identity for The Den Resort & Spa.',body:'A branding and identity presentation for The Den Resort & Spa, combining a natural setting with a calm visual language.',image:'images/Project%200501.png',gallery:['images/Project%200502.png']}
+ ]
 };
 const pg=(c,h)=>`<div class="pg ${c}">${h}</div>`,li=a=>a.map(x=>`<li>${x}</li>`).join('');
 const TT={about:'About',contact:'Contact',works:'Works'};
@@ -98,8 +107,8 @@ const V={
  home:()=>({l:pg('ctr','<h1 class="ti">Dhwani Kinger</h1><p class="sub">PORTFOLIO</p>'),r:pg('col','<i class="p1"></i><i class="p2"></i><i class="p3"></i><p class="note">pull a bookmark ↓</p>')}),
  about:()=>`<div class="cols"><div><h2>About</h2><div class="por">portrait<br>placeholder</div></div><div><p class="hand">${D.about.lead}</p>${D.about.bio.map(p=>`<p>${p}</p>`).join('')}<h3>Interests</h3><ul>${li(D.about.int)}</ul></div></div>`,
  contact:()=>`<div class="cols"><div><h2>Contact</h2><p>${D.contact.intro}</p><p class="hand">say hello!</p></div><div><h3>Email</h3><p>${D.contact.email}</p><h3>Elsewhere</h3><ul>${li(D.contact.social)}</ul><form id="cf"><label>Name<input></label><label>Email<input type="email"></label><label>Message<textarea rows="3"></textarea></label><button class="bk" type="submit">Send (demo)</button><p class="note" id="fm"></p></form></div></div>`,
- works:()=>`<div class="cols"><div><h2>Works</h2><p>A few pages from the journal. Pick an entry to open it.</p><p class="hand">placeholders for now ✎</p></div><div>${D.works.map((w,i)=>`<button class="it" data-go="p${i}"><span class="th" style="--h:${w.h}">img</span><span><b>${w.t}</b><small>${w.c} · ${w.y}</small>${w.d}</span></button>`).join('')}</div></div>`,
- project:i=>{const w=D.works[i],n=D.works.length;return`<div class="cols"><div><small>${w.c} · ${w.y}</small><h2>${w.t}</h2><p>${w.d}</p><p class="hand">chapter ${i+1} of ${n}</p></div><div><div class="img" style="--h:${w.h}">large image</div><p>${w.body}</p><div class="img" style="--h:${(w.h+40)%360}">gallery image</div><div class="pn">${i>0?`<button class="bk" data-go="p${i-1}">← Prev</button>`:''}${i<n-1?`<button class="bk" data-go="p${i+1}" style="margin-left:auto">Next →</button>`:''}</div></div></div>`}
+ works:()=>`<div class="cols"><div><h2>Works</h2><p>A few pages from the journal. Pick an entry to open it.</p><p class="hand">selected projects ✎</p></div><div>${D.works.map((w,i)=>`<button class="it" data-go="p${i}"><span class="th"><img src="${w.image}" alt="${w.t} project cover" loading="lazy"></span><span><b>${w.t}</b><small>${w.c} · ${w.y}</small>${w.d}</span></button>`).join('')}</div></div>`,
+ project:i=>{const w=D.works[i],n=D.works.length,imgs=[w.image,...w.gallery];return`<div class="cols"><div><small>${w.c} · ${w.y}</small><h2>${w.t}</h2><p>${w.d}</p><p class="hand">chapter ${i+1} of ${n}</p></div><div>${imgs.map((src,j)=>`<div class="img"><img src="${src}" alt="${w.t} — image ${j+1}" loading="${j===0?'eager':'lazy'}"></div>`).join('')}<p>${w.body}</p><div class="pn">${i>0?`<button class="bk" data-go="p${i-1}">← Prev</button>`:''}${i<n-1?`<button class="bk" data-go="p${i+1}" style="margin-left:auto">Next →</button>`:''}</div></div></div>`}
 };
 // ---------- engine ----------
 const $=s=>document.querySelector(s),book=$('#bk'),L=$('#L'),R=$('#R'),cv=$('#cv'),scr=$('#scr'),reduce=matchMedia('(prefers-reduced-motion:reduce)').matches,DUR=reduce?20:800;
